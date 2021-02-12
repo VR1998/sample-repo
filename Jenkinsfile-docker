@@ -46,6 +46,11 @@ spec:
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'azure-container-reg-id', 
                         usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                             sh "docker login -u ${USERNAME} -p ${PASSWORD} doconnect.azurecr.io"
+                            withDockerRegistry([credentialsId: "azure-container-reg-id", url: "doconnect.azurecr.io"]) {
+                                sh """docker pull hello-world:latest && \
+                                      docker tag hello-world:latest doconnect.azurecr.io/hello-world:latest && \
+                                      docker push doconnect.azurecr.io/hello-world:latest"""
+                            }
                    }
             }
         }
