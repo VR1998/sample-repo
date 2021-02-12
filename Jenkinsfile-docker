@@ -42,9 +42,11 @@ spec:
             }
         }
         stage('build-and-publish-dockerimage'){
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'azure-container-reg-id', 
-            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                sh "docker login -u ${USERNAME} -p ${PASSWORD} doconnect.azurecr.io"
+            container('docker'){
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'azure-container-reg-id', 
+                        usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                            sh "docker login -u ${USERNAME} -p ${PASSWORD} doconnect.azurecr.io"
+                   }
             }
         }
     }
